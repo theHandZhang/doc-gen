@@ -1,0 +1,40 @@
+(图像)
+
+java
+        1、使用File类提供的方法来获取当前路径：
+        File directory = new File(""); //实例化一个File对象。参数不同时，获取的最终结果也不同
+        directory.getCanonicalPath(); //获取标准路径。该方法需要放置在try/catch块中，或声明抛出异常
+        directory.getAbsolutePath(); //获取绝对路径。
+        我们来看一下实例化File时所使用的不同参数会导致的不同结果：
+参数为""：
+        File directory = new File("");
+        directory.getCanonicalPath(); //eclipse中运行为：E:\EclipseWorkspace\FileTestProject，jar包运行为：H:\FileTestProject
+        directory.getAbsolutePath(); //eclipse中运行为：E:\EclipseWorkspace\FileTestProject，jar包运行为：H:\FileTestProject
+参数为"."：
+        File directory = new File(".");
+        directory.getCanonicalPath(); //eclipse中运行为：E:\EclipseWorkspace\FileTestProject，jar包运行为：H:\FileTestProject
+        directory.getAbsolutePath(); //eclipse中运行为：E:\EclipseWorkspace\FileTestProject\. ，jar包运行为：H:\FileTestProject\.
+参数为".."：
+        File directory = new File("..");
+        directory.getCanonicalPath(); //eclipse中运行为：E:\EclipseWorkspace，jar包运行为：H:\
+        directory.getAbsolutePath(); //eclipse中为：E:\EclipseWorkspace\FileTestProject\.. ，jar包运行为：H:\FileTestProject\..
+参数为"./src"：
+        File directory = new File("./src");
+        directory.getCanonicalPath(); //eclipse中为：E:\EclipseWorkspace\FileTestProject\src，jar包运行为：H:\FileTestProject\src
+        directory.getAbsolutePath(); //eclipse中为：E:\EclipseWorkspace\FileTestProject\.\src，jar包运行为：H:\FileTestProject\.\src
+        综上，结合API文档可以看到，getCanonicalPath()方法其实是先调用了getAbsolutePath()，然后将返回结果处理为描述符合宿主系统路径命名规范的String（去掉了路径中多余的"."、".."等）。实例化File对象时，也可以自己使用参数"/"或"\\"等试试，其他情况也可以参照API中的构造函数，例如：File(String parent, String child)
+
+        2、使用Class类的getResource("").getPath()获取当前.class文件所在的路径：
+参数为""：
+        String path = getClass().getResource("").getPath();
+        /*eclipse中为：/E:/EclipseWorkspace/FileTestProject/bin/fileTest/，jar包运行报错（可能是由于jar包为一个整体了无法给出路径）*/
+参数为"/"：
+        String path = getClass().getResource("/").getPath();
+        /*eclipse中为：/E:/EclipseWorkspace/FileTestProject/bin/，jar包运行报错（可能是由于jar包为一个整体了无法给出路径）*/
+参数为"/fileTest"：
+        /*eclipse中为：/E:/EclipseWorkspace/FileTestProject/bin/fileTest，jar包运行报错（可能是由于jar包为一个整体了无法给出路径）*/
+        附：可以使用Class类的getResource("")以及getResourceAsStream("")方法来获取项目中的资源文件，具体的使用方法可以参考java使用getResource("")、getResourceAsStream("")获取项目中的资源文件
+
+        3、由System.getProperty("user.dir")获取当前程序的根目录：
+        System.getProperty("user.dir");
+        /* eclipse中运行为：E:\EclipseWorkspace\FileTestProject，jar包运行为：H:\FileTestProject */
