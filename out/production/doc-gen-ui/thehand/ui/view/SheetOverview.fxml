@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
 <AnchorPane stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thehand.ui.controller.SheetOverviewController">
     <children>
         <SplitPane dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -73,7 +74,12 @@
                                                                 <Label text="connection" GridPane.rowIndex="2" />
                                                                 <Label fx:id="excelTemplateLabel" styleClass="label-bright" text="Label" GridPane.columnIndex="1" />
                                                                 <Label fx:id="configXmlLabel" styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                <Label fx:id="connectionLabel" styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                <ChoiceBox styleClass="background" minWidth="150" fx:id="connectionChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                    <items>
+                                                                        <FXCollections fx:factory="observableArrayList">
+                                                                        </FXCollections>
+                                                                    </items>
+                                                                </ChoiceBox>
                                                             </children>
                                                         </GridPane>
                                                     </children>

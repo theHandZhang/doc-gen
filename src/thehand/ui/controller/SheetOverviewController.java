@@ -1,5 +1,7 @@
 package thehand.ui.controller;
 
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -40,8 +42,6 @@ public class SheetOverviewController {
     @FXML
     private Label configXmlLabel;
     @FXML
-    private Label connectionLabel;
-    @FXML
     private Label progressText;
     @FXML
     private Label DBMsg;
@@ -51,22 +51,18 @@ public class SheetOverviewController {
     private Button sqlDetailButton;
     @FXML
     private Button processButton;
+    @FXML
+    private ChoiceBox<String> connectionChoiceBox;
 
     private MainApp mainApp;
 
     private ConfigModel configModel;
 
-    /**
-     * The constructor.
-     * The constructor is called before the initialize() method.
-     */
+
     public SheetOverviewController() {
     }
 
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
-     */
+
     @FXML
     private void initialize() {
 
@@ -90,17 +86,18 @@ public class SheetOverviewController {
 
     }
 
-    /**
-     * Is called by the main application to give a reference back to itself.
-     * 
-     * @param mainApp
-     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
 
         excelTable.setItems(mainApp.getSheetList());
         paramTable.setItems(mainApp.getParamList());
         configModel = mainApp.getConfigModel();
+
+        connectionChoiceBox.setItems(FXCollections.observableArrayList());
+        for (StringProperty connection : configModel.getConnections()) {
+            connectionChoiceBox.getItems().add(connection.get());
+        }
+        connectionChoiceBox.setValue(configModel.connectionProperty().getValue());
 
         showSheetDetails(null);
         showExcelDetails(mainApp.getConfigModel());
@@ -120,7 +117,6 @@ public class SheetOverviewController {
     public void showExcelDetails(ConfigModel configModel) {
         this.excelTemplateLabel.setText(configModel.getExcelTemplate());
         this.configXmlLabel.setText(configModel.getConfigXml());
-        this.connectionLabel.setText(configModel.getConnection());
     }
 
 
@@ -143,6 +139,8 @@ public class SheetOverviewController {
 
     @FXML
     private void handleProcess() {
+
+        mainApp.getConfigModel().setConnection(connectionChoiceBox.getValue());
         if(!checkParamTableEditing()) {
             return;
         }

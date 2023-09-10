@@ -8,9 +8,9 @@ public class ParamModel {
     private final StringProperty key;
     private final StringProperty value;
 
-    public ParamModel(String key) {
+    public ParamModel(String key, String value) {
         this.key = new SimpleStringProperty(key);
-        this.value = new SimpleStringProperty("");
+        this.value = new SimpleStringProperty(value);
     }
 
     public String getKey() {

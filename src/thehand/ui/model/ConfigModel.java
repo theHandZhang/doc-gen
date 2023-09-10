@@ -4,6 +4,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigModel {
 
@@ -15,7 +20,7 @@ public class ConfigModel {
     private final StringProperty excelTemplatePath;
     private final StringProperty outputPath;
     private final StringProperty defaultConfigXml;
-    private final StringProperty defaultExcelTemplate;
+    private final List<StringProperty> connections;
 
     public ConfigModel(String configXml,
                        String excelTemplate,
@@ -25,7 +30,7 @@ public class ConfigModel {
                        String excelTemplatePath,
                        String outputPath,
                        String defaultConfigXml,
-                       String defaultExcelTemplate) {
+                       List<String> connections) {
         this.configXml = new SimpleStringProperty(configXml);
         this.excelTemplate = new SimpleStringProperty(excelTemplate);
         this.connection = new SimpleStringProperty(connection);
@@ -34,7 +39,14 @@ public class ConfigModel {
         this.excelTemplatePath = new SimpleStringProperty(excelTemplatePath);
         this.outputPath = new SimpleStringProperty(outputPath);
         this.defaultConfigXml = new SimpleStringProperty(defaultConfigXml);
-        this.defaultExcelTemplate = new SimpleStringProperty(defaultExcelTemplate);
+        this.connections = new ArrayList<>();
+        for (String connectionName : connections) {
+            this.connections.add(new SimpleStringProperty(connectionName));
+        }
+    }
+
+    public List<StringProperty> getConnections() {
+        return connections;
     }
 
     public String getConfigXmlPath() {
@@ -83,18 +95,6 @@ public class ConfigModel {
 
     public void setDefaultConfigXml(String defaultConfigXml) {
         this.defaultConfigXml.set(defaultConfigXml);
-    }
-
-    public String getDefaultExcelTemplate() {
-        return defaultExcelTemplate.get();
-    }
-
-    public StringProperty defaultExcelTemplateProperty() {
-        return defaultExcelTemplate;
-    }
-
-    public void setDefaultExcelTemplate(String defaultExcelTemplate) {
-        this.defaultExcelTemplate.set(defaultExcelTemplate);
     }
 
     public boolean isShowDBMSG() {

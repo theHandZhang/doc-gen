@@ -22,6 +22,7 @@ import thehand.ui.controller.SheetOverviewController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.prefs.Preferences;
@@ -59,6 +60,9 @@ public class MainApp extends Application {
         sheetList.add(new SheetModel("COVR", true, "select * from table"));
         sheetList.add(new SheetModel("PTRN", false, "select * from table"));
 
+        ArrayList<String> connections = new ArrayList<>();
+        connections.add("PROD-TSSQRY");
+        connections.add("UAT-TSS19");
         configModel = new ConfigModel(
                 "default",
                 "default",
@@ -68,10 +72,10 @@ public class MainApp extends Application {
                 "resources/excel",
                 "resources/output",
                 "default",
-                "default");
+                connections);
 
-        paramList.add(new ParamModel("chdrnum"));
-        paramList.add(new ParamModel("chdrnum"));
+        paramList.add(new ParamModel("chdrnum", ""));
+        paramList.add(new ParamModel("chdrnum", ""));
     }
 
     public ObservableList<SheetModel> getSheetList() {
